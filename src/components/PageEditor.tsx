@@ -110,12 +110,6 @@ function ReasonsEditor({ page }: { page: PageCfg }) {
       <Field label="Prompt">
         <TextArea value={page.prompt} onChange={(prompt) => edit({ prompt })} rows={2} />
       </Field>
-      <Switch
-        on={page.shuffle}
-        onChange={(shuffle) => edit({ shuffle })}
-        label="Shuffle for each member"
-        detail="“Other” always stays last. The preview follows the order below."
-      />
       <div className="c-reason-cols" aria-hidden>
         <span>Reason</span>
         <span>Save offer</span>

@@ -51,7 +51,6 @@ export type PageCfg = {
   keep: { label: string; destination: string };
   prompt: string;
   reasons: Reason[];
-  shuffle: boolean;
   warning: string;
   secondary: string;
   confirm: string;
@@ -155,7 +154,6 @@ export function makePage(plan: PlanId): PageCfg {
     keep: { label: 'Never mind, I want to keep fueling the fight.', destination: '/account/membership' },
     prompt: "Tell us why you're canceling your membership. We're always striving to improve your experience with DailyWire+.",
     reasons: REASONS.map((r) => ({ ...r })),
-    shuffle: true,
     warning: 'By clicking CONFIRM CANCELLATION below, you will lose access to your membership benefits when your membership expires.',
     secondary: 'Never mind',
     confirm: 'Confirm cancellation',

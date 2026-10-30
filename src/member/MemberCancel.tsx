@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Logo } from '../components/Icon';
-import { IMAGES, MEMBER, TITLES, fill, type Module, type Offer, type PageCfg, type Reason, type Visual } from '../data';
+import { IMAGES, MEMBER, TITLES, fill, type Module, type Offer, type PageCfg, type Visual } from '../data';
 import { params, pickOffer } from '../store';
 
 const Check = ({ color }: { color: string }) => (
@@ -155,7 +155,7 @@ export function SaveOfferModal({
   );
 }
 
-function Mod({ m, page, reasons, reason, setReason }: { m: Module; page: PageCfg; reasons: Reason[]; reason: string | null; setReason: (id: string) => void }) {
+function Mod({ m, page, reason, setReason }: { m: Module; page: PageCfg; reason: string | null; setReason: (id: string) => void }) {
   switch (m.type) {
     case 'headline':
       return <h2 className="mp-headline">{fill(page.headline)}</h2>;
@@ -205,7 +205,7 @@ function Mod({ m, page, reasons, reason, setReason }: { m: Module; page: PageCfg
             <h3 className="mp-required">REQUIRED</h3>
           </div>
           <ul>
-            {reasons.map((r) => (
+            {page.reasons.map((r) => (
               <li key={r.id}>
                 <label className="mp-reason">
                   <input type="radio" name="reason" checked={reason === r.id} onChange={() => setReason(r.id)} />
@@ -251,16 +251,6 @@ export function MemberCancel({
   const [shown, setShown] = useState<Offer | null>(null);
   const scroller = useRef<HTMLDivElement>(null);
 
-  // members get the reasons in random order, with "Other" kept last; the CMS preview shows the editor's order
-  const seed = useMemo(() => Math.random(), [page.reasons.length]);
-  const reasons = useMemo(() => {
-    if (!interactive || !page.shuffle) return page.reasons;
-    const other = page.reasons.filter((r) => r.id === 'rsn_other');
-    const rest = page.reasons.filter((r) => r.id !== 'rsn_other');
-    const key = (id: string) => Math.sin(seed * 9999 + id.length * 7 + id.charCodeAt(4) * 13);
-    return [...rest.sort((a, b) => key(a.id) - key(b.id)), ...other];
-  }, [page.reasons, page.shuffle, interactive, seed]);
-
   // an offer set to "member lands on the page" opens right away
   useEffect(() => {
     if (!interactive) return;
@@ -299,7 +289,7 @@ export function MemberCancel({
               .filter((m) => m.visible)
               .map((m) => (
                 <div key={m.id} className={'mp-mod is-' + m.type} data-mod={m.id}>
-                  <Mod m={m} page={page} reasons={reasons} reason={reason} setReason={choose} />
+                  <Mod m={m} page={page} reason={reason} setReason={choose} />
                 </div>
               ))}
           </div>
